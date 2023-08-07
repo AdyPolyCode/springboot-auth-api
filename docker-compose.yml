@@ -1,0 +1,32 @@
+services:
+
+  postgres:
+
+    container_name: postgres-test
+
+    image: postgres:latest
+
+    ports:
+      - 5432:5432
+
+    environment:
+      - POSTGRES_USER=${POST_USER}
+      - POSTGRES_PASSWORD=${POST_PW}
+      - POSTGRES_DB=${POST_DB}
+
+    restart: always
+
+  pgadmin:
+
+    container_name: pgadmin-test
+
+    image: dpage/pgadmin4:latest
+
+    ports:
+      - 8080:80
+
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PG_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PG_PW}
+
+    restart: always
