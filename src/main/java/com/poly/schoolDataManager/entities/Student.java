@@ -2,15 +2,12 @@ package com.poly.schoolDataManager.entities;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "student")
-public class Student {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Student extends BaseEntity {
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -29,16 +26,6 @@ public class Student {
 
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
-
-    public Student() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -91,7 +78,7 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +

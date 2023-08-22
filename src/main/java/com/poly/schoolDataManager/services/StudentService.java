@@ -2,14 +2,14 @@ package com.poly.schoolDataManager.services;
 
 import com.poly.schoolDataManager.entities.Student;
 import com.poly.schoolDataManager.exceptions.NotFoundEntityException;
-import com.poly.schoolDataManager.payload.response.EntityResPayload;
+import com.poly.schoolDataManager.payload.PayloadMapper;
+import com.poly.schoolDataManager.payload.response.EntityPayload;
 import com.poly.schoolDataManager.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,52 +22,71 @@ public class StudentService {
         this.repository = repository;
     }
 
-    public EntityResPayload getById(Long id) {
+    public EntityPayload getById(Long id) {
         Optional<Student> student = repository.findById(id);
 
-        return student.map(data -> {
-            EntityResPayload payload = new EntityResPayload();
+        if(student.isEmpty()) {
+            throw new NotFoundEntityException("Student with id '" + id + "' was not found!");
+        }
 
-            payload.setFirstName(data.getFirstName());
-            payload.setLastName(data.getLastName());
-            payload.setAge(data.getAge());
-            payload.setPhoneNumber(data.getPhoneNumber());
+        EntityPayload payload = new EntityPayload();
+        new PayloadMapper<Student, EntityPayload>(student.get(), payload).mapTo(payload);
 
-            return payload;
-        }).orElseThrow(() -> new NotFoundEntityException("Student with id '" + id + "' was not found!"));
+        return payload;
     }
 
-    public List<EntityResPayload> getAll() {
+    public List<EntityPayload> getAll() {
         List<Student> student = repository.findAll();
-        List<EntityResPayload> payload = new ArrayList<>();
+        List<EntityPayload> payload = new ArrayList<>();
 
         student.forEach(data -> {
-            EntityResPayload ep = new EntityResPayload();
+            EntityPayload ep = new EntityPayload();
+            PayloadMapper<Student, EntityPayload> mapper = new PayloadMapper<>(data, ep);
 
-            ep.setFirstName(data.getFirstName());
-            ep.setLastName(data.getLastName());
-            ep.setAge(data.getAge());
-            ep.setPhoneNumber(data.getPhoneNumber());
-
+            mapper.mapTo(ep);
             payload.add(ep);
         });
 
         return payload;
     }
 
-    public EntityResPayload updateById(Long id, EntityResPayload payload) {
+    public EntityPayload create(EntityPayload payload) {
+        Student student = new Student();
+        PayloadMapper<EntityPayload, Student> mapper = new PayloadMapper<>(payload, student);
+        Date currentDate = new java.util.Date();
+
+        mapper.mapTo(payload);
+        student.setCreatedAt(currentDate);
+        student.setUpdatedAt(currentDate);
+        repository.saveAndFlush(student);
+
+        return payload;
+    }
+
+    public EntityPayload updateById(Long id, EntityPayload payload) {
         Optional<Student> student = repository.findById(id);
 
-        return student.map(data -> {
-            data.setFirstName(payload.getFirstName());
-            data.setLastName(payload.getLastName());
-            data.setAge(payload.getAge());
-            data.setPhoneNumber(payload.getPhoneNumber());
-            data.setUpdatedAt(Date.valueOf(LocalDate.now()));
+        if(student.isEmpty()) {
+            throw new NotFoundEntityException("Student with id '" + id + "' was not found!");
+        }
 
-            repository.saveAndFlush(data);
-            // TODO create a dto and dao mapper
-            return new EntityResPayload();
-        }).orElseThrow(() -> new NotFoundEntityException("Student with id '" + id + "' was not found!"));
+        EntityPayload ep = new EntityPayload();
+        Student s = student.get();
+
+        new PayloadMapper<EntityPayload, Student>(payload, s).mapTo(payload);
+        repository.save(s);
+        new PayloadMapper<Student, EntityPayload>(s, ep).mapTo(ep);
+
+        return ep;
+    }
+
+    public void deleteById(Long id) {
+        Optional<Student> student = repository.findById(id);
+
+        if(student.isEmpty()) {
+            throw new NotFoundEntityException("Student with id '" + id + "' was not found!");
+        }
+
+        repository.delete(student.get());
     }
 }
