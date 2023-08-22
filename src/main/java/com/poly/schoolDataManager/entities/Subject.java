@@ -6,11 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "subject")
-public class Subject {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Subject extends BaseEntity {
 
     @Column(name = "type", nullable = false, unique = true)
     private String name;
@@ -36,16 +32,6 @@ public class Subject {
     @OneToOne(targetEntity = Room.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room roomId;
-
-    public Subject() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -98,7 +84,7 @@ public class Subject {
     @Override
     public String toString() {
         return "Subject{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", lengthInMinutes=" + lengthInMinutes +

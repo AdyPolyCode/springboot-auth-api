@@ -4,11 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "room")
-public class Room {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Room extends BaseEntity {
 
     @Column(name = "type", nullable = false, unique = true)
     private String type;
@@ -18,16 +14,6 @@ public class Room {
 
     @OneToOne(mappedBy = "roomId")
     private Subject subject;
-
-    public Room() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getType() {
         return type;
@@ -56,7 +42,7 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", type='" + type + '\'' +
                 ", capacity=" + capacity +
                 ", subject=" + subject +
