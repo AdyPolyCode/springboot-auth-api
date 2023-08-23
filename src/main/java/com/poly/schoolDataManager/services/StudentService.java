@@ -1,6 +1,7 @@
 package com.poly.schoolDataManager.services;
 
 import com.poly.schoolDataManager.entities.Student;
+import com.poly.schoolDataManager.entities.Teacher;
 import com.poly.schoolDataManager.exceptions.NotFoundEntityException;
 import com.poly.schoolDataManager.payload.PayloadMapper;
 import com.poly.schoolDataManager.payload.response.EntityPayload;
@@ -31,6 +32,32 @@ public class StudentService {
 
         EntityPayload payload = new EntityPayload();
         new PayloadMapper<Student, EntityPayload>(student.get(), payload).mapTo(payload);
+
+        return payload;
+    }
+
+    public List<EntityPayload> getAllByFirstName(String firstName, Integer limit) {
+        List<Student> students = repository.findAllByFirstName(firstName, limit);
+        List<EntityPayload> payload = new ArrayList<>();
+
+        students.forEach(student -> {
+            EntityPayload e = new EntityPayload();
+            new PayloadMapper<Student, EntityPayload>(student, e).mapTo(e);
+            payload.add(e);
+        });
+
+        return payload;
+    }
+
+    public List<EntityPayload> getAllByLastName(String lastName, Integer limit) {
+        List<Student> students = repository.findAllByLastName(lastName, limit);
+        List<EntityPayload> payload = new ArrayList<>();
+
+        students.forEach(student -> {
+            EntityPayload e = new EntityPayload();
+            new PayloadMapper<Student, EntityPayload>(student, e).mapTo(e);
+            payload.add(e);
+        });
 
         return payload;
     }

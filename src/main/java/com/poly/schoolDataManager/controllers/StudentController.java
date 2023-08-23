@@ -31,6 +31,26 @@ public class StudentController {
         return ResponseEntity.ok(payload);
     }
 
+    @GetMapping("/firstN")
+    public ResponseEntity<List<EntityPayload>> getAllByFirstName(
+            @RequestParam(name = "firstname") String firstName,
+            @RequestParam(name = "limit", defaultValue = "10") Integer limit
+    ) {
+        List<EntityPayload> payload = service.getAllByFirstName(firstName, limit);
+
+        return ResponseEntity.ok(payload);
+    }
+
+    @GetMapping("/lastN")
+    public ResponseEntity<List<EntityPayload>> getAllByLastName(
+            @RequestParam(name = "lastname") String lastName,
+            @RequestParam(name = "limit", defaultValue = "10") Integer limit
+    ) {
+        List<EntityPayload> payload = service.getAllByLastName(lastName, limit);
+
+        return ResponseEntity.ok(payload);
+    }
+
     @GetMapping
     public ResponseEntity<List<EntityPayload>> getAll() {
         List<EntityPayload> payload = service.getAll();

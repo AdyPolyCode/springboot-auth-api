@@ -35,6 +35,32 @@ public class TeacherService {
         return payload;
     }
 
+    public List<EntityPayload> getAllByFirstName(String firstName, Integer limit) {
+        List<Teacher> teachers = repository.findAllByFirstName(firstName, limit);
+        List<EntityPayload> payload = new ArrayList<>();
+
+        teachers.forEach(teacher -> {
+            EntityPayload e = new EntityPayload();
+            new PayloadMapper<Teacher, EntityPayload>(teacher, e).mapTo(e);
+            payload.add(e);
+        });
+
+        return payload;
+    }
+
+    public List<EntityPayload> getAllByLastName(String lastName, Integer limit) {
+        List<Teacher> teachers = repository.findAllByLastName(lastName, limit);
+        List<EntityPayload> payload = new ArrayList<>();
+
+        teachers.forEach(teacher -> {
+            EntityPayload e = new EntityPayload();
+            new PayloadMapper<Teacher, EntityPayload>(teacher, e).mapTo(e);
+            payload.add(e);
+        });
+
+        return payload;
+    }
+
     public List<EntityPayload> getAll() {
         List<Teacher> teacher = repository.findAll();
         List<EntityPayload> payload = new ArrayList<>();
