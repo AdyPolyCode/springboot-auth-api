@@ -4,10 +4,13 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-
 @Entity
 @Table(name = "teacher")
 public class Teacher extends BaseEntity {
+
+    @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @JoinColumn(columnDefinition = "teacher_user_id", referencedColumnName = "id")
+    private Long teacherUser;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -29,6 +32,14 @@ public class Teacher extends BaseEntity {
 
     @OneToOne(mappedBy = "teacherId")
     private Subject subject;
+
+    public Long getTeacherUserId() {
+        return teacherUser;
+    }
+
+    public void setTeacherUserId(Long teacherUser) {
+        this.teacherUser = teacherUser;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -89,13 +100,14 @@ public class Teacher extends BaseEntity {
     @Override
     public String toString() {
         return "Teacher{" +
-                "id=" + getId() +
+                "teacherUserId=" + teacherUser +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", subject=" + subject +
                 '}';
     }
 }
