@@ -19,8 +19,8 @@ public class User extends BaseEntity {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "hashed_password", unique = true, nullable = false)
-    private String hashedPassword;
+    @Column(name = "password", unique = true, nullable = false)
+    private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<UserRole> roles;
@@ -41,12 +41,12 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public String getHashedPassword() {
-        return hashedPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Set<UserRole> getRoles() {
@@ -60,9 +60,11 @@ public class User extends BaseEntity {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "student=" + student +
+                ", teacher=" + teacher +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", hashedPassword='" + hashedPassword + '\'' +
+                ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
     }
