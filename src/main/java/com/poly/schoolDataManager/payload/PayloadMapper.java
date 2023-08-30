@@ -42,7 +42,7 @@ public class PayloadMapper<A, B> {
      * @param <T>       the type parameter
      * @param classType the class type
      */
-    public <T> void mapTo(T classType) {
+    public <T> void mapWithParamsFrom(T classType) {
         getIncludedPropsFrom(classType);
 
         includedProps.keySet().forEach(
