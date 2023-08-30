@@ -1,7 +1,6 @@
 package com.poly.schoolDataManager.services;
 
 import com.poly.schoolDataManager.entities.Student;
-import com.poly.schoolDataManager.entities.Teacher;
 import com.poly.schoolDataManager.exceptions.NotFoundEntityException;
 import com.poly.schoolDataManager.payload.PayloadMapper;
 import com.poly.schoolDataManager.payload.response.EntityPayload;
@@ -31,7 +30,7 @@ public class StudentService {
         }
 
         EntityPayload payload = new EntityPayload();
-        new PayloadMapper<Student, EntityPayload>(student.get(), payload).mapTo(payload);
+        new PayloadMapper<Student, EntityPayload>(student.get(), payload).mapWithParamsFrom(payload);
 
         return payload;
     }
@@ -42,7 +41,7 @@ public class StudentService {
 
         students.forEach(student -> {
             EntityPayload e = new EntityPayload();
-            new PayloadMapper<Student, EntityPayload>(student, e).mapTo(e);
+            new PayloadMapper<Student, EntityPayload>(student, e).mapWithParamsFrom(e);
             payload.add(e);
         });
 
@@ -55,7 +54,7 @@ public class StudentService {
 
         students.forEach(student -> {
             EntityPayload e = new EntityPayload();
-            new PayloadMapper<Student, EntityPayload>(student, e).mapTo(e);
+            new PayloadMapper<Student, EntityPayload>(student, e).mapWithParamsFrom(e);
             payload.add(e);
         });
 
@@ -70,7 +69,7 @@ public class StudentService {
             EntityPayload ep = new EntityPayload();
             PayloadMapper<Student, EntityPayload> mapper = new PayloadMapper<>(data, ep);
 
-            mapper.mapTo(ep);
+            mapper.mapWithParamsFrom(ep);
             payload.add(ep);
         });
 
@@ -82,7 +81,7 @@ public class StudentService {
         PayloadMapper<EntityPayload, Student> mapper = new PayloadMapper<>(payload, student);
         Date currentDate = new java.util.Date();
 
-        mapper.mapTo(payload);
+        mapper.mapWithParamsFrom(payload);
         student.setCreatedAt(currentDate);
         student.setUpdatedAt(currentDate);
         repository.saveAndFlush(student);
@@ -100,9 +99,9 @@ public class StudentService {
         EntityPayload ep = new EntityPayload();
         Student s = student.get();
 
-        new PayloadMapper<EntityPayload, Student>(payload, s).mapTo(payload);
+        new PayloadMapper<EntityPayload, Student>(payload, s).mapWithParamsFrom(payload);
         repository.save(s);
-        new PayloadMapper<Student, EntityPayload>(s, ep).mapTo(ep);
+        new PayloadMapper<Student, EntityPayload>(s, ep).mapWithParamsFrom(ep);
 
         return ep;
     }

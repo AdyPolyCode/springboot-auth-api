@@ -30,7 +30,7 @@ public class TeacherService {
         }
 
         EntityPayload payload = new EntityPayload();
-        new PayloadMapper<Teacher, EntityPayload>(teacher.get(), payload).mapTo(payload);
+        new PayloadMapper<Teacher, EntityPayload>(teacher.get(), payload).mapWithParamsFrom(payload);
 
         return payload;
     }
@@ -41,7 +41,7 @@ public class TeacherService {
 
         teachers.forEach(teacher -> {
             EntityPayload e = new EntityPayload();
-            new PayloadMapper<Teacher, EntityPayload>(teacher, e).mapTo(e);
+            new PayloadMapper<Teacher, EntityPayload>(teacher, e).mapWithParamsFrom(e);
             payload.add(e);
         });
 
@@ -54,7 +54,7 @@ public class TeacherService {
 
         teachers.forEach(teacher -> {
             EntityPayload e = new EntityPayload();
-            new PayloadMapper<Teacher, EntityPayload>(teacher, e).mapTo(e);
+            new PayloadMapper<Teacher, EntityPayload>(teacher, e).mapWithParamsFrom(e);
             payload.add(e);
         });
 
@@ -69,7 +69,7 @@ public class TeacherService {
             EntityPayload ep = new EntityPayload();
             PayloadMapper<Teacher, EntityPayload> mapper = new PayloadMapper<>(data, ep);
 
-            mapper.mapTo(ep);
+            mapper.mapWithParamsFrom(ep);
             payload.add(ep);
         });
 
@@ -81,7 +81,7 @@ public class TeacherService {
         PayloadMapper<EntityPayload, Teacher> mapper = new PayloadMapper<>(payload, teacher);
         Date currentDate = new Date();
 
-        mapper.mapTo(payload);
+        mapper.mapWithParamsFrom(payload);
         teacher.setCreatedAt(currentDate);
         teacher.setUpdatedAt(currentDate);
         repository.saveAndFlush(teacher);
@@ -99,9 +99,9 @@ public class TeacherService {
         EntityPayload ep = new EntityPayload();
         Teacher t = teacher.get();
 
-        new PayloadMapper<EntityPayload, Teacher>(payload, t).mapTo(payload);
+        new PayloadMapper<EntityPayload, Teacher>(payload, t).mapWithParamsFrom(payload);
         repository.save(t);
-        new PayloadMapper<Teacher, EntityPayload>(t, ep).mapTo(ep);
+        new PayloadMapper<Teacher, EntityPayload>(t, ep).mapWithParamsFrom(ep);
 
         return ep;
     }
