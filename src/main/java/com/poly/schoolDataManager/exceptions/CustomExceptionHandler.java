@@ -38,7 +38,6 @@ public class CustomExceptionHandler {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorPayload payload = new ErrorPayload.Builder()
                 .setStatusCode(status)
-                .setStatusMessage(exception.getMessage())
                 .setBody(errors)
                 .build();
 

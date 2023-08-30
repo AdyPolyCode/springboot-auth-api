@@ -11,10 +11,13 @@ public class ErrorPayload implements Serializable {
 
     private final String description;
 
+    private final Object body;
+
     private ErrorPayload(Builder builder) {
         this.statusCode = builder.getStatusCode();
         this.statusMessage = builder.getStatusMessage();
         this.description = builder.getDescription();
+        this.body = builder.getBody();
     }
 
     public HttpStatus getStatusCode() {
@@ -29,10 +32,15 @@ public class ErrorPayload implements Serializable {
         return description;
     }
 
+    public Object getBody() {
+        return body;
+    }
+
     public static class Builder {
         private HttpStatus statusCode;
         private String statusMessage;
         private String description;
+        private Object body;
 
         public HttpStatus getStatusCode() {
             return statusCode;
@@ -58,6 +66,15 @@ public class ErrorPayload implements Serializable {
 
         public Builder setDescription(String description) {
             this.description = description;
+            return this;
+        }
+
+        public Object getBody() {
+            return body;
+        }
+
+        public Builder setBody(Object body) {
+            this.body = body;
             return this;
         }
 
