@@ -22,6 +22,19 @@ public class StudentService {
         this.repository = repository;
     }
 
+    public EntityPayload getByUserId(Long userId) {
+        Optional<Student> student = repository.findByStudentUser(userId);
+
+        if(student.isEmpty()) {
+            throw new NotFoundEntityException("Teacher with user id '" + userId + "' was not found!");
+        }
+
+        EntityPayload payload = new EntityPayload();
+        new PayloadMapper<Student, EntityPayload>(student.get(), payload).mapWithParamsFrom(payload);
+
+        return payload;
+    }
+
     public EntityPayload getById(Long id) {
         Optional<Student> student = repository.findById(id);
 
