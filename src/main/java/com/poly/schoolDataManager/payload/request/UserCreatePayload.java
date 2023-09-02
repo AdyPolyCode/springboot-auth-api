@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCreatePayload {
     @NotEmpty(message = "Username should not be empty")
     @Size(min = 4, max = 12, message = "Username length must be between 4 and 12 included")
